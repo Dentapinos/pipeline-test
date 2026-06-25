@@ -1,12 +1,10 @@
 name: Check
 on: push
 jobs:
-  lint: #любое имя
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Install deps
-        run: npm install
-      - name: Lint
-        run: npm run lint
+      - name: Build with Maven
+        run: mvn clean package

@@ -9,6 +9,8 @@ RUN mvn package -DskipTests -B
 # Runtime stage
 FROM maven:3.9-eclipse-temurin-21
 WORKDIR /app
+COPY pom.xml .
+COPY src ./src
 COPY --from=build /app/target/*.jar app.jar
 COPY --from=build /root/.m2 /root/.m2
 EXPOSE 8080

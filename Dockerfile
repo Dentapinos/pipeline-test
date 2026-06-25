@@ -7,8 +7,9 @@ COPY src ./src
 RUN mvn package -DskipTests -B
 
 # Runtime stage
-FROM eclipse-temurin:21-jre-alpine
+FROM maven:3.9-eclipse-temurin-21
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /root/.m2 /root/.m2
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]

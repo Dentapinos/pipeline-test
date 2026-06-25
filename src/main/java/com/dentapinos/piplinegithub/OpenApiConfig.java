@@ -13,7 +13,7 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Тесты pipeline github")
+                        .title("Тесты pipeline git-hub")
                         .description("Тестовый сервис")
                         .version("1.0.0")
                         .contact(new Contact().name("Dentapinos")));

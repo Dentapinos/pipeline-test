@@ -7,24 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: maven
-
-      - name: Run tests
-        run: mvn test
-
   build:
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -77,4 +60,14 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H $SERVER_HOST >> ~/.ssh/known_hosts
-          docker save myapp:latest | ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST "docker load && docker stop myapp || true && docker rm myapp || true && docker run -d --name myapp -p 8085:8080 myapp:latest"
+          docker save myapp:latest | ssh -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_HOST "
+            docker load &&
+            docker stop myapp || true &&
+            docker rm myapp || true &&
+            docker run -d --name myapp-test -p 8085:8080 myapp:latest sleep 300 &&
+            sleep 10 &&
+            docker exec myapp-test mvn test &&
+            docker stop myapp-test &&
+            docker rm myapp-test &&
+            docker run -d --name myapp -p 8085:8080 myapp:latest
+          "

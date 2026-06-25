@@ -9,9 +9,7 @@ class PiplineGithubApplicationTests {
 
     @Test
     void contextLoads() {
-
         Assertions.assertThat(true).isTrue();
-
     }
 
 }

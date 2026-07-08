@@ -10,6 +10,6 @@ public class MainController {
     @Schema(name= "Получаем приветствие")
     @GetMapping("/")
     public String getHello() {
-        return "Hello Denis";
+        return "<h1>Hello Deniska ya<h1>";
     }
 }

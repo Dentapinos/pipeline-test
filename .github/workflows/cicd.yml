@@ -66,10 +66,10 @@ jobs:
             docker rm myapp 2>/dev/null || true &&
             docker stop myapp-test 2>/dev/null || true &&
             docker rm myapp-test 2>/dev/null || true &&
-            docker run -d --name myapp-test -p 8085:8080 myapp:latest &&
+            docker run -d --name myapp-test -p 9001:8080 myapp:latest &&
             sleep 15 &&
             docker exec myapp-test sh -c 'cd /app && mvn test' &&
             docker stop myapp-test &&
             docker rm myapp-test &&
-            docker run -d --name myapp -p 8085:8080 myapp:latest
+            docker run -d --name myapp -p 9001:8080 myapp:latest
           "

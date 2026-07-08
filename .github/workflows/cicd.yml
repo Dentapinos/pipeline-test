@@ -7,7 +7,24 @@ on:
     branches: [main]
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Maven tests
+        run: mvn test -B
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -68,7 +85,7 @@ jobs:
             docker rm myapp-test 2>/dev/null || true &&
             docker run -d --name myapp-test -p 9001:8080 myapp:latest &&
             sleep 15 &&
-            docker exec myapp-test sh -c 'cd /app && mvn test' &&
+            curl -f http://localhost:9001/ &&
             docker stop myapp-test &&
             docker rm myapp-test &&
             docker run -d --name myapp -p 9001:8080 myapp:latest
